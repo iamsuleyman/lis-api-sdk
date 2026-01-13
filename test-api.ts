@@ -32,10 +32,10 @@ async function testGetPatientByContact(client: LisApiClient) {
   }
 }
 
-async function testGetBillDetails(client: LisApiClient) {
-  console.log('\n💰 Testing getBillDetails...')
+async function testGetOrders(client: LisApiClient) {
+  console.log('\n💰 Testing getOrders...')
   try {
-    const response = await client.getBillDetails(TEST_DATA.labUserId, true)
+    const response = await client.getOrders(TEST_DATA.labUserId, true)
     console.log('✅ Success!')
     console.log('Response:', JSON.stringify(response, null, 2))
     return true
@@ -76,14 +76,14 @@ async function runTests() {
 
   const results = {
     getPatientByContact: await testGetPatientByContact(client),
-    getBillDetails: await testGetBillDetails(client),
+    getOrders: await testGetOrders(client),
     getReport: await testGetReport(client),
   }
 
   console.log('\n' + '='.repeat(50))
   console.log('📊 Test Results:')
   console.log(`  getPatientByContact: ${results.getPatientByContact ? '✅' : '❌'}`)
-  console.log(`  getBillDetails: ${results.getBillDetails ? '✅' : '❌'}`)
+  console.log(`  getOrders: ${results.getOrders ? '✅' : '❌'}`)
   console.log(`  getReport: ${results.getReport ? '✅' : '❌'}`)
 
   const allPassed = Object.values(results).every((r) => r)

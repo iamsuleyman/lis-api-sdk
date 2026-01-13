@@ -38,7 +38,25 @@ export class LisOTPApiClient {
       })
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        // Try to get error details from response body
+        let errorMessage = `HTTP error! status: ${response.status}`
+        try {
+          const errorBody = await response.text()
+          if (errorBody) {
+            try {
+              const errorJson = JSON.parse(errorBody)
+              errorMessage += ` - ${JSON.stringify(errorJson)}`
+            } catch {
+              errorMessage += ` - ${errorBody}`
+            }
+          }
+        } catch {
+          // If we can't read the error body, just use the status
+        }
+        const error = new Error(errorMessage)
+        ;(error as any).status = response.status
+        ;(error as any).statusText = response.statusText
+        throw error
       }
 
       return await response.json()

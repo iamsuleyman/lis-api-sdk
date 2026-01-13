@@ -36,8 +36,16 @@
     "healthcare",
     "lab"
   ],
-  "author": "",
+  "author": "Suleyman",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamsuleyman/lis-api-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iamsuleyman/lis-api-sdk/issues"
+  },
+  "homepage": "https://github.com/iamsuleyman/lis-api-sdk#readme",
   "engines": {
     "node": ">=20.0.0"
   },
