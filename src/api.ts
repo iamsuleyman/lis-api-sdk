@@ -76,7 +76,7 @@ export class LisApiClient {
     return this.request<PatientResponse>(url)
   }
 
-  async getBillDetails(
+  async getOrders(
     labUserId: string,
     iscomplete?: boolean,
   ): Promise<BillingDetailsResponse> {

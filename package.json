@@ -25,7 +25,8 @@
     "build": "tsup src/index.ts --format cjs,esm --dts --clean",
     "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "test:api": "tsx test-api.ts"
+    "test:api": "tsx test-api.ts",
+    "test:otp": "tsx test-otp.ts"
   },
   "keywords": [
     "lis",

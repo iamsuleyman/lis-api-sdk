@@ -21,7 +21,7 @@ const otpApiClient = new LisOTPApiClient()
 
 // Usage
 const patient = await client.getPatientByContact('+1234567890')
-const billDetails = await client.getBillDetails('lab-user-id', true)
+const orders = await client.getOrders('lab-user-id', true)
 const report = await client.getReport('bill-id')
 const otpResponse = await otpApiClient.sendOtp('1234567890', 'phone', '+91')
 const verification = await otpApiClient.verifyOtp('1234567890', 'phone', '123456')
@@ -48,7 +48,7 @@ const otpApiClient = new LisOTPApiClient(logger)
 ### Main API
 
 - **`getPatientByContact(contact: string): Promise<PatientResponse>`** - Get patient details by contact number
-- **`getBillDetails(labUserId: string, iscomplete?: boolean): Promise<BillingDetailsResponse>`** - Get billing details
+- **`getOrders(labUserId: string, iscomplete?: boolean): Promise<BillingDetailsResponse>`** - Get orders/billing details
 - **`getReport(billId: string): Promise<ReportResponse>`** - Get report by bill ID
 
 ### OTP API
