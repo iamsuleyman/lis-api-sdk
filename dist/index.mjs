@@ -1,5 +1,6 @@
 // src/api.ts
 var LIS_BASE_URL = "https://crelio.solutions";
+var LIVEHEALTH_BASE_URL = "https://livehealth.solutions";
 var LisApiClient = class {
   logger;
   baseUrl;
@@ -72,6 +73,18 @@ var LisApiClient = class {
       token: this.integrationToken,
       billId
     });
+    return this.request(url);
+  }
+  /**
+   * Get all tests and profiles (test master).
+   * Returns test price, name, test code, category, unique ID and description.
+   * Use test id or test code when creating orders (e.g. LHREGISTER).
+   * API: GET https://livehealth.solutions/getAllTestsAndProfiles/?token=<Token>
+   * Status codes: 200 Success, 401 Wrong request type, 404 Invalid token/Bad request
+   */
+  async getAllTestsAndProfiles() {
+    const base = LIVEHEALTH_BASE_URL.replace(/\/$/, "");
+    const url = `${base}/getAllTestsAndProfiles/?token=${encodeURIComponent(this.integrationToken)}`;
     return this.request(url);
   }
 };
@@ -174,6 +187,7 @@ var LisOTPApiClient = class {
 export {
   LIS_BASE_URL,
   LIS_PATIENT_BASE_URL,
+  LIVEHEALTH_BASE_URL,
   LisApiClient,
   LisOTPApiClient
 };

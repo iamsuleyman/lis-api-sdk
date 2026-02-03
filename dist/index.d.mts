@@ -198,6 +198,15 @@ interface UserDetails {
     suffix: string;
 }
 
+interface Appointment {
+    id: number;
+    status: string;
+    confirmed: BinaryFlag;
+    check_in: BinaryFlag;
+    assigned_doctor: string | null;
+    appointment_times: string;
+    creation_source: string | null;
+}
 interface BillingInfo {
     id: number;
     billForId_id: number;
@@ -234,7 +243,7 @@ interface TestSampleIdDetails {
 interface BillDetail {
     billing_info: BillingInfo[];
     test_sample_id_details: TestSampleIdDetails[];
-    appointment: Record<string, unknown>;
+    appointment: Appointment | Record<string, never>;
     home_collection: Record<string, unknown>;
     Id: number;
     orgId: Organization;
@@ -411,7 +420,42 @@ interface ReportResponse {
     reportDetails: ReportDetail[];
 }
 
+/**
+ * Single test or profile from the test master (getAllTestsAndProfiles).
+ * Use test id or test code when creating orders (e.g. LHREGISTER).
+ */
+interface TestMasterItem {
+    /** Unique ID - use this or testCode when creating orders */
+    id?: string;
+    /** Test code - use this or id when creating orders */
+    testCode?: string;
+    name?: string;
+    /** Category of the test */
+    category?: string;
+    /** Price of the test */
+    price?: number;
+    description?: string;
+    [key: string]: unknown;
+}
+/**
+ * Response from getAllTestsAndProfiles API.
+ * LiveHealth returns an object with profileTestList (array of profiles, each with testList).
+ */
+interface GetAllTestsAndProfilesResponse {
+    profileTestList?: Array<{
+        testCode?: string;
+        testAmount?: string;
+        testDescription?: string;
+        testCategory?: string;
+        testList?: TestMasterItem[];
+        [key: string]: unknown;
+    }>;
+    [key: string]: unknown;
+}
+
 declare const LIS_BASE_URL = "https://crelio.solutions";
+/** Base URL for LiveHealth APIs (e.g. test master, LHREGISTER) */
+declare const LIVEHEALTH_BASE_URL = "https://livehealth.solutions";
 interface Logger {
     log(message: string, ...optionalParams: any[]): void;
     error(message: string, ...optionalParams: any[]): void;
@@ -436,6 +480,14 @@ declare class LisApiClient {
      * Fetches report details using the Lab Bill ID
      */
     getReport(billId: string): Promise<ReportResponse>;
+    /**
+     * Get all tests and profiles (test master).
+     * Returns test price, name, test code, category, unique ID and description.
+     * Use test id or test code when creating orders (e.g. LHREGISTER).
+     * API: GET https://livehealth.solutions/getAllTestsAndProfiles/?token=<Token>
+     * Status codes: 200 Success, 401 Wrong request type, 404 Invalid token/Bad request
+     */
+    getAllTestsAndProfiles(): Promise<GetAllTestsAndProfilesResponse>;
 }
 
 declare const LIS_PATIENT_BASE_URL = "https://patient-in.creliohealth.com";
@@ -462,4 +514,4 @@ declare class LisOTPApiClient {
     verifyOtp(identifier: string, type: 'phone' | 'email', otp: string): Promise<OTPVerificationResponse>;
 }
 
-export { type BillDetail, type BillingDetailsResponse, type BillingInfo, type BillingSummary, type BinaryFlag, type Doctor, type Gender, LIS_BASE_URL, LIS_PATIENT_BASE_URL, type LabUser, type LinkedProfile, LisApiClient, LisOTPApiClient, type Logger, type OTPVerificationResponse, type Organization, type PatientDetails, type PatientResponse, type PaymentMethod, type Profile, type ReportDetail, type ReportFormat, type ReportFormatAndValue, type ReportResponse, type SendOtpResponse, type SigningDoctor, type TestReference, type TestSampleIdDetails, type UserDetails };
+export { type Appointment, type BillDetail, type BillingDetailsResponse, type BillingInfo, type BillingSummary, type BinaryFlag, type Doctor, type Gender, type GetAllTestsAndProfilesResponse, LIS_BASE_URL, LIS_PATIENT_BASE_URL, LIVEHEALTH_BASE_URL, type LabUser, type LinkedProfile, LisApiClient, LisOTPApiClient, type Logger, type OTPVerificationResponse, type Organization, type PatientDetails, type PatientResponse, type PaymentMethod, type Profile, type ReportDetail, type ReportFormat, type ReportFormatAndValue, type ReportResponse, type SendOtpResponse, type SigningDoctor, type TestMasterItem, type TestReference, type TestSampleIdDetails, type UserDetails };

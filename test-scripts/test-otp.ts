@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { LisOTPApiClient, LIS_PATIENT_BASE_URL } from './src/otp'
+import { LisOTPApiClient, LIS_PATIENT_BASE_URL } from '../src/otp'
 
 // Get test data from environment variables or command line arguments
 // Usage examples:

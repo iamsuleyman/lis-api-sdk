@@ -4,6 +4,16 @@ import { Doctor } from './doctor.interface'
 import { LabUser } from './lab-user.interface'
 import { UserDetails } from './user-details.interface'
 
+export interface Appointment {
+  id: number
+  status: string
+  confirmed: BinaryFlag
+  check_in: BinaryFlag
+  assigned_doctor: string | null
+  appointment_times: string
+  creation_source: string | null
+}
+
 export interface BillingInfo {
   id: number
   billForId_id: number
@@ -42,7 +52,7 @@ export interface TestSampleIdDetails {
 export interface BillDetail {
   billing_info: BillingInfo[]
   test_sample_id_details: TestSampleIdDetails[]
-  appointment: Record<string, unknown>
+  appointment: Appointment | Record<string, never>
   home_collection: Record<string, unknown>
   Id: number
   orgId: Organization

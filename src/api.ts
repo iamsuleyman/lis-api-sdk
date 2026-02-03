@@ -1,10 +1,13 @@
 import {
   BillingDetailsResponse,
+  GetAllTestsAndProfilesResponse,
   PatientResponse,
   ReportResponse,
 } from './interfaces'
 
 export const LIS_BASE_URL = 'https://crelio.solutions'
+/** Base URL for LiveHealth APIs (e.g. test master, LHREGISTER) */
+export const LIVEHEALTH_BASE_URL = 'https://livehealth.solutions'
 
 export interface Logger {
   log(message: string, ...optionalParams: any[]): void
@@ -107,5 +110,18 @@ export class LisApiClient {
     })
 
     return this.request<ReportResponse>(url)
+  }
+
+  /**
+   * Get all tests and profiles (test master).
+   * Returns test price, name, test code, category, unique ID and description.
+   * Use test id or test code when creating orders (e.g. LHREGISTER).
+   * API: GET https://livehealth.solutions/getAllTestsAndProfiles/?token=<Token>
+   * Status codes: 200 Success, 401 Wrong request type, 404 Invalid token/Bad request
+   */
+  async getAllTestsAndProfiles(): Promise<GetAllTestsAndProfilesResponse> {
+    const base = LIVEHEALTH_BASE_URL.replace(/\/$/, '')
+    const url = `${base}/getAllTestsAndProfiles/?token=${encodeURIComponent(this.integrationToken)}`
+    return this.request<GetAllTestsAndProfilesResponse>(url)
   }
 }
